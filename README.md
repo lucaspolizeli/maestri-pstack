@@ -2,7 +2,7 @@
 
 pstack for [Maestri](https://maestri.app). It is Lauren Tan's (poteto's) [pstack](https://github.com/cursor/plugins/tree/main/pstack), with its Cursor mechanics rewritten for Maestri on Claude Code.
 
-The skill text is Lauren's. Only what names a Cursor mechanism changes. [CONTEXT.md](CONTEXT.md) defines the Maestri form:
+The skill text is Lauren's. Only what names a Cursor mechanism changes. [CONTEXT.md](plugins/pstack/CONTEXT.md) defines the Maestri form:
 
 - A short or read-only subagent runs in the chat, through Claude Code's `Agent` tool.
 - A delegate that writes files runs as a Maestri teammate on its own floor (a git worktree).

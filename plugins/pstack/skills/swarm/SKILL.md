@@ -24,7 +24,7 @@ Open a todolist with one entry per phase before launching anything.
 
 ## Phase B: Fan out
 
-Spawn all N workers at once. Each worker dispatches by the rules in the plugin's `CONTEXT.md`. A worker that writes files runs as a recruit on its own floor (`maestri floor create`, then `maestri recruit --floor`). A worker that only reads or measures runs as a background `Agent` call with no `subagent_type` and the step 4 model, left unset for `inherit-parent`. Send all local workers in one message, and all canvas workers through one `maestri ask --batch`. Run `maestri list` before you recruit, and reuse a teammate with `maestri recruit --replace`.
+Spawn all N workers at once. Each worker dispatches by the rules in `<plugin root>/CONTEXT.md`. A worker that writes files runs as a recruit on its own floor (`maestri floor create`, then `maestri recruit --floor`). A worker that only reads or measures runs as a background `Agent` call with no `subagent_type` and the step 4 model, left unset for `inherit-parent`. Send all local workers in one message, and all canvas workers through one `maestri ask --batch`. Run `maestri list` before you recruit, and reuse a teammate with `maestri recruit --replace`.
 
 When a worker must start from a non-default branch, create its floor with `maestri floor create "<slice>" --existing-branch --branch <branch>`, or `--copy` when the ground floor has that branch checked out.
 

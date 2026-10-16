@@ -92,7 +92,7 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 
 **Use the `poteto-agent` persona for any subagent you spawn inside a playbook step** (code-writing delegates, ad-hoc helpers). The chat that receives `/poteto-mode` runs the playbook. Never spawn a `poteto-agent` to run the playbook itself. Routed workflow skills (`how`, `why`, `interrogate`, `reflect`, `swarm`) set their own persona for diverse-model review. Respect what the skill prescribes, don't override to `poteto-agent`.
 
-**Pick the dispatch for every subagent.** A subagent runs one of two ways. Check these rules in order:
+**Pick the dispatch for every subagent.** A subagent runs one of two ways. Canvas dispatch needs this terminal to be the Maestro. Run `maestri preset list` once per chat, and if it fails with "This terminal is not the Maestro", use the fallbacks in `<plugin root>/CONTEXT.md`. Otherwise, check these rules in order:
 
 1. The delegate writes files. Give it its own floor and run it on the canvas: `maestri floor create "<task>"`, then `maestri recruit "<codename>" --floor "<task>" --role "poteto-agent"`. This holds even when the role names a Claude alias. Pass the preset whose command runs that alias. With no such preset, omit `--preset` so the recruit is a copy of you.
 2. The work must outlive this turn (a PR watcher, a dev server, a simulator). Run it on the canvas.

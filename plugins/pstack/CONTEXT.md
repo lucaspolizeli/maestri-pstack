@@ -34,6 +34,13 @@ A panel must span two model families, so its second member is a Maestri preset. 
 
 ## Choosing the dispatch
 
+Canvas dispatch needs Maestro Mode. Only the Maestro terminal can run `maestri recruit`, `maestri preset list`, `maestri role`, `maestri floor create`, `maestri floor list` and `maestri routine`. Any terminal can run `maestri list`, `maestri ask`, `maestri check`, `maestri note` and `maestri floor status`. Check once per chat: run `maestri preset list`. If it fails with "This terminal is not the Maestro", this chat has no canvas dispatch. Say so once, and use these fallbacks:
+
+- Every subagent runs local. A delegate that writes files gets `isolation: "worktree"` on its `Agent` call in place of a floor.
+- A panel member on a preset runs on the panel fallback (`opus, sonnet`).
+- A fixed-cadence routine becomes Claude Code's `/loop <interval>`.
+- Work that must outlive the turn goes to the user, who can run it from the Maestro terminal.
+
 Use the role's sheet value, and check these rules in order:
 
 1. The delegate writes files. Use canvas dispatch onto its own floor: `maestri floor create "<task>"`, then `maestri recruit "<codename>" --floor "<task>" ...`. This applies even when the role names a Claude alias. The recruit then runs `claude --model <alias>` through a preset that matches the alias, or a copy of the parent if no preset matches.

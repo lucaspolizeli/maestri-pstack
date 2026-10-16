@@ -16,6 +16,8 @@ Two sources are dependable:
 - The Claude aliases you can pass as `model` to a local `Agent` subagent in this session: `opus`, `fable`, `sonnet`, `haiku`.
 - The Maestri presets that `maestri preset list` prints. Each one is a valid `preset:"Name"` value, such as `preset:"Codex"`.
 
+Only the Maestro terminal can run `maestri preset list`. If it fails with "This terminal is not the Maestro", tell the user once that presets and the `poteto-agent` role need this skill to run from the Maestro terminal. Offer only aliases and `inherit-parent` in this run, and skip step 6.
+
 If you cannot detect either, ask the user to paste what they have access to. Never write an alias or a preset you have not confirmed is available. The value `inherit-parent` is always valid even though it is not detected.
 
 ### 2. Load current state
@@ -71,10 +73,10 @@ interrogate reviewers: opus @xhigh, preset:"Codex"
 Canvas dispatch recruits teammates with `--role "poteto-agent"`. Run `maestri role list`. If it has no `poteto-agent` role, create it:
 
 ```
-maestri role create "poteto-agent" "Before any work, read <plugin root>/agents/poteto-agent.md in full and follow it. Run \`maestri list\` to see your connected teammates and shared notes before you ask anyone anything. When your brief names an ask back line, send your result with it when you are done." --scope global
+maestri role create "poteto-agent" "Before any work, read agents/poteto-agent.md from the newest maestri-pstack version under ~/.claude/plugins/cache/maestri-pstack/maestri-pstack/ in full and follow it. Run \`maestri list\` to see your connected teammates and shared notes before you ask anyone anything. When your brief names an ask back line, send your result with it when you are done." --scope global
 ```
 
-Write the real plugin root path in place of `<plugin root>`. If the role exists, leave it as it is.
+The prompt names the cache directory, not one version's path, so it survives plugin updates. If the role exists, leave it as it is.
 
 ### 7. Confirm
 
