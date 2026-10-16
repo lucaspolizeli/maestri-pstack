@@ -30,8 +30,14 @@ const denylist = [
 // Lines that name Cursor only to credit the upstream source.
 const allowed = [/github\.com\/cursor\/plugins|`cursor\/plugins`|\(cursor\/plugins\)/, /Lauren Tan/];
 
+// CONTEXT.md maps each Cursor mechanism to its Maestri form, so it names them on purpose.
+const skipped = new Set(["node_modules", "CONTEXT.md"]);
+
 function* walk(dir) {
   for (const name of readdirSync(dir)) {
+    if (skipped.has(name)) {
+      continue;
+    }
     const path = join(dir, name);
     if (statSync(path).isDirectory()) {
       yield* walk(path);
