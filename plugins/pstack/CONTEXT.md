@@ -87,7 +87,9 @@ Every subagent is a recruit. Do not use the `Agent` tool. A recruit lives throug
    - A preset: `--preset "<name>"`.
    - `inherit-parent`: neither flag, so the recruit is a copy of you.
 
-   A builder also gets its own floor (see [Floors](#floors)). Invent a short codename per recruit, and never reuse the role name.
+   A builder also gets its own floor (see [Floors](#floors)). Invent a short codename per recruit, one word in the style of the teammates `maestri list` shows. Never reuse the role name, and never use a role name plus digits such as `Verif1177`. Always pass `--role`.
+
+   The model is fixed at recruit time. Never send `/model` to a recruit: Claude Code saves it as the default for every new session in `~/.claude/settings.json`. To change a recruit's model, recruit it again with `--replace "<codename>"` and a new `--command`. Do not fall back to the `Claude Code` preset or a copy of yourself to get another model, because neither passes `--model`.
 2. **Check it booted.** Run `maestri check "<codename>"` before the first ask. A fresh Claude Code recruit can stop at the folder-trust prompt. Accept it with `maestri ask "<codename>" --raw "\n"`. A fresh Codex recruit can open a "hook needs review" screen. Close it with `--raw "\e"`. When a prompt does not clear, ask the user to click it.
 3. **Brief.** `maestri ask "<codename>" "<brief>"`. The brief names the persona file, the checkout or scratch path, and the task. It ends with the ask back line, `maestri ask "<your name>" "<result>"`, so the full result comes back to you. A recruit does not share this chat's context, so the brief inlines what it needs or points at files.
 4. **Dismiss.** Once its result is in and you have read it, run `maestri dismiss "<codename>"`. Keep a recruit only while it still holds something: a PR it owns that is not merged or closed, a floor in `review` that waits on the user, a process the next step needs (a dev server, a simulator, a PR watcher), or a fix round that needs its uncommitted changes. Dismiss it once that ends. Dismiss only recruits this run created.
