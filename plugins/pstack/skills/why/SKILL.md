@@ -12,9 +12,9 @@ Recruits, floors, and routines need this terminal to be the Maestro. Without it,
 
 Investigate the motivation and intent behind code. The companion `how` skill answers what the code does and how it works. `why` answers what forces led to its shape.
 
-Each spawn below names a role line in the model sheet (`~/.config/maestri-pstack/models.md`) and a default. Set `model` to that line's value, or to the default if the sheet or the line is missing. Leave `model` unset when the value is `inherit-parent`. A `preset:` value runs that spawn as a recruit, per `<plugin root>/CONTEXT.md`. If the `Agent` tool rejects an alias, use the default and say so. Pick each subagent's reasoning level for the job, per the Subagents section of the **poteto-mode** skill.
+Each spawn below names a role line in the model sheet (`~/.config/maestri-pstack/models.md`) and a default. Run each spawn on that line's value, or on the default if the sheet or the line is missing. If the recruit or the `Agent` tool rejects an alias, use the default and say so. Pick each subagent's reasoning level for the job, per the Subagents section of the **poteto-mode** skill.
 
-Every spawn is a background `Agent` call with no `subagent_type`, so it keeps this session's MCP tools. **Do not restrict its tools.** A tool-limited agent loses MCP access, which disables the MCP-backed investigators and the synthesizer's citation spot-checks. Investigators still shouldn't write anything, so each brief says "Do not edit files."
+Every spawn is a `pstack-researcher` recruit, dispatched by `<plugin root>/CONTEXT.md`, and dismissed once its result is in. A recruit runs with the user's MCP servers. Outside the Maestro, every spawn is a background `Agent` call with no `subagent_type`, so it keeps this session's MCP tools. **Do not restrict its tools.** A tool-limited agent loses MCP access, which disables the MCP-backed investigators and the synthesizer's citation spot-checks. Investigators still shouldn't write anything, which the role says, and outside the Maestro each brief says "Do not edit files."
 
 ## Operating Posture
 

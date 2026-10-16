@@ -4,12 +4,13 @@ pstack for [Maestri](https://maestri.app). It is Lauren Tan's (poteto's) [pstack
 
 The skill text is Lauren's. Only what names a Cursor mechanism changes. [CONTEXT.md](plugins/pstack/CONTEXT.md) defines the Maestri form:
 
-- A short or read-only subagent runs in the chat, through Claude Code's `Agent` tool.
-- A delegate that writes files runs as a Maestri teammate on its own floor (a git worktree).
+- Every subagent runs as a Maestri teammate in its own terminal, with a pstack role for its function (builder, reviewer, researcher, verifier). The run closes each one when its work is in.
+- A builder that writes files works on its own git floor.
+- A verifier drives web pages through a Maestri portal and mobile apps through a device portal.
 - A panel that needs another model family, such as Codex, recruits that member through a Maestri preset, so `interrogate`, `arena` and `architect` panels can mix Claude and Codex.
 - A fixed-cadence loop runs as a Maestri routine. A loop until a check passes runs as Claude Code's `/loop`.
 
-maestri-pstack works inside a Maestri terminal that runs Claude Code. Routines and floors need Maestro Mode on the coordinating terminal.
+maestri-pstack works inside a Maestri terminal that runs Claude Code. Recruits, roles, floors and routines need Maestro Mode on the coordinating terminal. Outside it, subagents fall back to Claude Code's `Agent` tool.
 
 ## Install
 
@@ -18,7 +19,7 @@ claude plugin marketplace add lucaspolizeli/maestri-pstack
 claude plugin install maestri-pstack@maestri-pstack
 ```
 
-Then run `/maestri-pstack:setup-pstack` once per machine. It writes the model sheet, `~/.config/maestri-pstack/models.md`, and creates the `poteto-agent` role in Maestri. Without a sheet, every role runs on the defaults in [models.json](plugins/pstack/models.json).
+Then run `/maestri-pstack:setup-pstack` once per machine. It writes the model sheet, `~/.config/maestri-pstack/models.md`, and creates the four pstack roles in Maestri. Without a sheet, every role runs on the defaults in [models.json](plugins/pstack/models.json).
 
 ## Use
 

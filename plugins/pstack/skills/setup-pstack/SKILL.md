@@ -7,7 +7,7 @@ description: Configure which models pstack uses per role and at what reasoning b
 
 `<plugin root>` is the directory two levels above this skill's base directory. It holds `CONTEXT.md` and `models.json`.
 
-Write `~/.config/maestri-pstack/models.md`, the model sheet that sets pstack's model per role, and make sure the Maestri role `poteto-agent` exists.
+Write `~/.config/maestri-pstack/models.md`, the model sheet that sets pstack's model per role, and make sure the four pstack roles exist in Maestri.
 
 ## Steps
 
@@ -15,10 +15,10 @@ Write `~/.config/maestri-pstack/models.md`, the model sheet that sets pstack's m
 
 Two sources are dependable:
 
-- The Claude aliases you can pass as `model` to a local `Agent` subagent in this session: `opus`, `fable`, `sonnet`, `haiku`.
+- The Claude aliases a recruit can run with `claude --model`: `opus`, `fable`, `sonnet`, `haiku`.
 - The Maestri presets that `maestri preset list` prints. Each one is a valid `preset:"Name"` value, such as `preset:"Codex"`.
 
-Only the Maestro terminal can run `maestri preset list`. If it fails with "This terminal is not the Maestro", tell the user once that presets and the `poteto-agent` role need this skill to run from the Maestro terminal. Offer only aliases and `inherit-parent` in this run, and skip step 6.
+Only the Maestro terminal can run `maestri preset list`. If it fails with "This terminal is not the Maestro", tell the user once that presets and the pstack roles need this skill to run from the Maestro terminal. Offer only aliases and `inherit-parent` in this run, and skip step 6.
 
 If you cannot detect either, ask the user to paste what they have access to. Never write an alias or a preset you have not confirmed is available. The value `inherit-parent` is always valid even though it is not detected.
 
@@ -49,7 +49,7 @@ Write `~/.config/maestri-pstack/models.md` with a `# budget` line with the chose
 
 ```
 # pstack model configuration. One line per role. Delete a line to fall back to the skill default.
-# Values: a Claude alias with an optional @effort (local dispatch), preset:"Name" (canvas dispatch), or inherit-parent (the parent chat model). Every entry in a panel list counts toward its fan-out.
+# Values: a Claude alias with an optional @effort, preset:"Name" (a Maestri preset), or inherit-parent (the parent chat model). Every entry in a panel list counts toward its fan-out.
 # budget: large (xhigh)
 feature, refactoring: opus @xhigh
 bug-fix: opus @xhigh
@@ -70,15 +70,15 @@ architect runners: opus @xhigh, preset:"Codex"
 interrogate reviewers: opus @xhigh, preset:"Codex"
 ```
 
-### 6. Create the poteto-agent role
+### 6. Create the pstack roles
 
-Canvas dispatch recruits teammates with `--role "poteto-agent"`. Run `maestri role list`. If it has no `poteto-agent` role, create it:
+Every recruit gets one of four Maestri roles: `pstack-builder`, `pstack-reviewer`, `pstack-researcher` and `pstack-verifier`. `<plugin root>/CONTEXT.md` holds each role's prompt in its Roles section. Run `maestri role list`. For each pstack role:
 
-```
-maestri role create "poteto-agent" "Before any work, read agents/poteto-agent.md from the newest maestri-pstack version under ~/.claude/plugins/cache/maestri-pstack/maestri-pstack/ in full and follow it. Run \`maestri list\` to see your connected teammates and shared notes before you ask anyone anything. When your brief names an ask back line, send your result with it when you are done." --scope global
-```
+- Missing: `maestri role create "<role>" "<prompt>" --scope global`, with the prompt copied verbatim from `CONTEXT.md`.
+- Present with a different prompt: `maestri role write "<role>" "<prompt>"`, so a plugin update reaches the role.
+- Present with the same prompt: leave it.
 
-The prompt names the cache directory, not one version's path, so it survives plugin updates. If the role exists, leave it as it is.
+The prompts name the cache directory, not one version's path, so they survive plugin updates. When the list still has the old `poteto-agent` role from an earlier version, delete it with `maestri role delete "poteto-agent"`. If that refuses because a terminal still uses it, tell the user which and leave it.
 
 ### 7. Confirm
 

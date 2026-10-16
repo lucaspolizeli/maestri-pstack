@@ -26,9 +26,9 @@ That covers the session (`<session-id>.jsonl`) and subagent (`<session-id>/subag
 
 ## 2. Spawn three reviewers in parallel
 
-One message, three background `Agent` calls with no `subagent_type`, so they keep this session's MCP tools. Reviewers need MCP access to look up the tickets, chat threads, and observability traces the transcript references, so do not restrict their tools. Each template already tells the reviewer not to modify files.
+Three `pstack-reviewer` recruits, dispatched by `<plugin root>/CONTEXT.md` and briefed through one `maestri ask --batch`, with the transcript path in each brief. Dismiss each once its output is in. Outside the Maestro, one message with three background `Agent` calls with no `subagent_type`, so they keep this session's MCP tools. Reviewers need MCP access to look up the tickets, chat threads, and observability traces the transcript references, so do not restrict their tools. Each template already tells the reviewer not to modify files.
 
-Each reviewer and the synthesizer name a role line in the model sheet (`~/.config/maestri-pstack/models.md`) and a default. Set `model` to that line's value, or to the default if the sheet or the line is missing. Leave `model` unset when the value is `inherit-parent`. A `preset:` value runs that reviewer as a recruit, per `<plugin root>/CONTEXT.md`, with the transcript path in its brief. If the `Agent` tool rejects an alias, use the default and say so. Pick each subagent's reasoning level for the job, per the Subagents section of the **poteto-mode** skill.
+Each reviewer and the synthesizer name a role line in the model sheet (`~/.config/maestri-pstack/models.md`) and a default. Run each on that line's value, or on the default if the sheet or the line is missing. If the recruit or the `Agent` tool rejects an alias, use the default and say so. Pick each subagent's reasoning level for the job, per the Subagents section of the **poteto-mode** skill.
 
 | Lens | Role line | Default `model` | Prompt template |
 |---|---|---|---|
@@ -40,7 +40,7 @@ Pass each template verbatim, substituting the transcript path or digest where ma
 
 ## 3. Synthesize
 
-One background `Agent` call with no `subagent_type`, `model` from the `reflect judgment, divergent, synthesizer` line (default `opus`). It spot-verifies citations through MCP, so do not restrict its tools. Pass `references/synthesizer.md` verbatim, with each reviewer's full output inlined where marked. It returns an Accepted / Rejected / Backlog list.
+One `pstack-reviewer` recruit on the `reflect judgment, divergent, synthesizer` line (default `opus`), dismissed once its list is in. Outside the Maestro, one background `Agent` call with no `subagent_type`. It spot-verifies citations through MCP, so do not restrict its tools. Pass `references/synthesizer.md` verbatim, with each reviewer's full output inlined where marked. It returns an Accepted / Rejected / Backlog list.
 
 ## 4. Structural enforcement check
 

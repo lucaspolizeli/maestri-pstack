@@ -35,9 +35,9 @@ Launch all reviewers at once, one per entry on the `interrogate reviewers` line 
 | Reviewer A | `opus` |
 | Reviewer B | `preset:"Codex"` |
 
-Each reviewer dispatches by the rules in `<plugin root>/CONTEXT.md`, and its brief says "Do not edit files." An alias entry runs as a background `Agent` call with no `subagent_type` and `model` set to the alias. A `preset:` entry runs as a recruit with that preset. Send the local reviewers in one message and the canvas reviewers through one `maestri ask --batch`. Run `maestri list` first, and reuse a teammate that already reviews with `maestri recruit --replace`. Omit `model` for an `inherit-parent` entry, so that reviewer runs on the parent model.
+Each reviewer is a `pstack-reviewer` recruit, dispatched by `<plugin root>/CONTEXT.md`. An alias entry runs `claude` on that alias, a `preset:` entry runs that preset, and an `inherit-parent` entry is a copy of you. Recruit them all, brief them through one `maestri ask --batch`, and dismiss each once its findings are in. Outside the Maestro, each runs as a background `Agent` call with no `subagent_type`, and its brief says "Do not edit files."
 
-If the `Agent` tool rejects an alias, run that reviewer on `opus` and say so. The family of an alias is Claude, and the family of a preset is the preset. Do not block the review on a model issue. Never treat an `inherit-parent` entry as rejected or apply either fallback to it.
+If the recruit or the `Agent` tool rejects an alias, run that reviewer on `opus` and say so. The family of an alias is Claude, and the family of a preset is the preset. Do not block the review on a model issue. Never treat an `inherit-parent` entry as rejected or apply either fallback to it.
 
 Read `references/reviewer-prompt.md` and fill in the same template for every reviewer with the stated intent, the diff or file contents, the rubric from `references/rubric.md`, and the code-quality lens from `references/code-quality-review.md`. Pick each subagent's reasoning level for the job, per the Subagents section of the **poteto-mode** skill.
 

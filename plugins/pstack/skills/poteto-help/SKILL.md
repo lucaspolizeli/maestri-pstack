@@ -42,7 +42,7 @@ Installing changes nothing until the user invokes a skill. Only `/setup-pstack` 
 
 If cost is the worry, say where the tokens go and how to spend fewer. pstack spends extra tokens on subagents and review panels. Rerun `/setup-pstack` and pick a smaller budget or cheaper models. A role set to `inherit-parent` runs on the chat's model, which saves tokens when the chat runs on a cheaper model. A shorter panel list runs fewer subagents, one for each entry. Save `/poteto-mode` for work that needs rigor.
 
-maestri-pstack is pstack rewritten for Maestri on Claude Code. Its workflow skills, including `/poteto-mode`, `/how`, `/why`, and `/teach`, run subagents with per-role models, either as Claude Code `Agent` subagents or as Maestri teammates on the canvas. The canvas parts need Claude Code running in a Maestri terminal, and routines and floors need Maestro Mode on that terminal.
+maestri-pstack is pstack rewritten for Maestri on Claude Code. Its workflow skills, including `/poteto-mode`, `/how`, `/why`, and `/teach`, run every subagent as a Maestri teammate on the canvas, with a per-role model and a pstack role, and close each one when its work is in. The canvas parts need Claude Code running in a Maestri terminal, and routines and floors need Maestro Mode on that terminal.
 
 ## Start a task with `/poteto-mode`
 
@@ -53,7 +53,7 @@ Whether `/poteto-mode` stays on depends on how the user starts it:
 - Invoking `/poteto-mode` attaches the skill to one message. It fades as the chat moves on, so start each new task with it.
 - On Claude Code, plugin skills carry the plugin's name: type `/maestri-pstack:poteto-mode`. This file writes every skill as `/<name>`.
 
-Mid-chat, "new task" makes the mode match a fresh playbook. `/poteto-mode` already uses `poteto-agent` for the subagents its playbook steps spawn. To get the same style from a subagent of your own, spawn it with `subagent_type: "maestri-pstack:poteto-agent"`, or recruit a Maestri teammate with `--role "poteto-agent"`.
+Mid-chat, "new task" makes the mode match a fresh playbook. `/poteto-mode` already uses `poteto-agent` for the subagents its playbook steps spawn. To get the same style from a teammate of your own, recruit it with `--role "pstack-builder"`.
 
 ## Pick a skill
 
