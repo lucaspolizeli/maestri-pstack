@@ -105,6 +105,13 @@ If `maestri preset list` fails with "This terminal is not the Maestro", this cha
 
 The orchestrate, autopilot-full and multi-phase-plan playbooks have no fallback. Their programs run for days, recover from restarts through floors, and arm their audit as a routine, and a local subagent or `/loop` dies with the chat. Outside the Maestro they stop and ask the user to start them from the Maestro terminal.
 
+## Hooks
+
+`<plugin root>/hooks/` holds two Claude Code hooks. Both act only in a Maestri terminal (`MAESTRI_TERMINAL_ID` is set), and both stay silent outside it.
+
+- **SessionStart** injects the mandate to route non-trivial tasks through `maestri-pstack:poteto-mode`, and says whether this terminal is the Maestro.
+- **PreToolUse** denies an `Agent` call when this terminal is the Maestro and the call is a maestri-pstack subagent: a `maestri-pstack:*` persona, or a general-purpose spawn after a maestri-pstack skill ran in this session. The denial points back to [Dispatch](#dispatch). Other subagents, such as `Explore`, pass.
+
 ## Floors
 
 A builder works on its own git floor: `maestri floor create "<task>" --branch <branch>`, then `maestri recruit ... --floor "<task>"`. To start from an existing branch, add `--existing-branch`, or `--copy` when the ground has that branch checked out. Never pass `--no-git` for a builder. It shares the ground checkout, so parallel builders overwrite each other.

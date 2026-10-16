@@ -9,7 +9,7 @@
       "name": "maestri-pstack",
       "source": "./plugins/pstack",
       "description": "pstack for Maestri on Claude Code. Original pstack by Lauren Tan (poteto).",
-      "version": "0.2.0"
+      "version": "0.3.0"
     }
   ]
 }

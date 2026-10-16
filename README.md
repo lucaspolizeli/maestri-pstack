@@ -12,6 +12,8 @@ The skill text is Lauren's. Only what names a Cursor mechanism changes. [CONTEXT
 
 maestri-pstack works inside a Maestri terminal that runs Claude Code. Recruits, roles, floors and routines need Maestro Mode on the coordinating terminal. Outside it, subagents fall back to Claude Code's `Agent` tool.
 
+In a Maestri terminal, a SessionStart hook routes non-trivial tasks to `poteto-mode`, and on the Maestro a PreToolUse hook denies a maestri-pstack subagent on the `Agent` tool, so it runs as a recruit.
+
 ## Install
 
 ```shell
