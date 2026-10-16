@@ -6,6 +6,10 @@ disable-model-invocation: true
 
 # Arena
 
+`<plugin root>` is the directory two levels above this skill's base directory. It holds `CONTEXT.md` and `models.json`.
+
+Recruits, floors, and routines need this terminal to be the Maestro. Without it, use the fallbacks in `<plugin root>/CONTEXT.md`.
+
 Open a todolist with one entry per phase (Frame, Fan out, Cross-judge, Pick, Graft, Verify) before launching anything.
 
 ## Phase A: Frame

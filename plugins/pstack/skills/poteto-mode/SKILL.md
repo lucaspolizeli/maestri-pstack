@@ -8,6 +8,8 @@ color: yellow
 
 # Poteto mode
 
+`<plugin root>` is the directory two levels above this skill's base directory. It holds `CONTEXT.md` and `models.json`.
+
 Bundled skills live at `../<name>/SKILL.md` from this file, so put this file's absolute path in every `poteto-agent` prompt.
 
 ## Non-negotiables

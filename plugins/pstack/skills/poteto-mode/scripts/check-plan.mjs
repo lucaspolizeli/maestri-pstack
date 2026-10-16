@@ -17,7 +17,13 @@ const SUB_BLOCKS = [
 	"Merge.",
 ];
 const PROGRAM_H3 = ["Arm the program", "Spawn owners", "PR mechanics", "Verdict and merge", "Boot recipe"];
-const PROGRAM_MARKERS = ["from the plugin root", "maestri routine create", "--every 1h", "status message"];
+// A marker list means any one of its entries passes: a Maestro arms a routine, any other terminal arms /loop.
+const PROGRAM_MARKERS = [
+	"from the plugin root",
+	["maestri routine create", "/loop 1h"],
+	["--every 1h", "/loop 1h"],
+	"status message",
+];
 const HOW_TO_READ_MARKERS = [
 	"One box is one unit of work",
 	"names the evidence",
@@ -114,7 +120,10 @@ else {
 		else cursor = at + 1;
 	}
 	for (const marker of PROGRAM_MARKERS) {
-		if (!bodyText(program).includes(marker)) fail(program.n, `Program checklist lacks "${marker}"`);
+		const options = [marker].flat();
+		if (!options.some((option) => bodyText(program).includes(option))) {
+			fail(program.n, `Program checklist lacks "${options.join('" or "')}"`);
+		}
 	}
 }
 

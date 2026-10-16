@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # Why
 
+`<plugin root>` is the directory two levels above this skill's base directory. It holds `CONTEXT.md` and `models.json`.
+
 Investigate the motivation and intent behind code. The companion `how` skill answers what the code does and how it works. `why` answers what forces led to its shape.
 
 Each spawn below names a role line in the model sheet (`~/.config/maestri-pstack/models.md`) and a default. Set `model` to that line's value, or to the default if the sheet or the line is missing. Leave `model` unset when the value is `inherit-parent`. A `preset:` value runs that spawn as a recruit, per `<plugin root>/CONTEXT.md`. If the `Agent` tool rejects an alias, use the default and say so. Pick each subagent's reasoning level and fast or standard speed for the job, per the Subagents section of the **poteto-mode** skill.

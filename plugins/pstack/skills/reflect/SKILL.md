@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # Reflect
 
+`<plugin root>` is the directory two levels above this skill's base directory. It holds `CONTEXT.md` and `models.json`.
+
 Mine the current conversation for durable learnings, then route them into skill edits.
 
 Invoke when the user says "reflect" or "/reflect". Skip when the conversation is trivial, off-topic, or already covered by an existing skill the parent followed correctly. One-offs are not learnings.

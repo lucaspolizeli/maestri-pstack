@@ -6,6 +6,10 @@ disable-model-invocation: true
 
 # Architect
 
+`<plugin root>` is the directory two levels above this skill's base directory. It holds `CONTEXT.md` and `models.json`.
+
+Recruits, floors, and routines need this terminal to be the Maestro. Without it, use the fallbacks in `<plugin root>/CONTEXT.md`.
+
 Sketch types, function signatures, class shapes, and module boundaries with `not implemented` bodies and pseudocode. Synthesize across multiple model perspectives, then fill in code against the chosen sketch.
 
 ## Start

@@ -6,6 +6,10 @@ disable-model-invocation: true
 
 # Swarm
 
+`<plugin root>` is the directory two levels above this skill's base directory. It holds `CONTEXT.md` and `models.json`.
+
+Recruits, floors, and routines need this terminal to be the Maestro. Without it, use the fallbacks in `<plugin root>/CONTEXT.md`.
+
 ## Start
 
 Open a todolist with one entry per phase before launching anything.

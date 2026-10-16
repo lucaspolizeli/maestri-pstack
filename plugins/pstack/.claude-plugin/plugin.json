@@ -1,7 +1,7 @@
 {
   "name": "maestri-pstack",
   "displayName": "maestri-pstack (pstack for Maestri)",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Lauren Tan's pstack with its Cursor mechanics rewritten for Maestri: short subagents run in the chat, cross-family panels and file-writing work run as Maestri teammates on floors, and loops run as routines.",
   "author": {
     "name": "Lucas Polizeli"

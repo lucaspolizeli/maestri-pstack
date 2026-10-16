@@ -5,6 +5,8 @@ description: Configure which models pstack uses per role and at what reasoning b
 
 # Setup pstack
 
+`<plugin root>` is the directory two levels above this skill's base directory. It holds `CONTEXT.md` and `models.json`.
+
 Write `~/.config/maestri-pstack/models.md`, the model sheet that sets pstack's model per role, and make sure the Maestri role `poteto-agent` exists.
 
 ## Steps
