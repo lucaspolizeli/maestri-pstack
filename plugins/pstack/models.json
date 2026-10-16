@@ -1,0 +1,32 @@
+{
+  "sheet": "~/.config/maestri-pstack/models.md",
+  "tiers": {
+    "code": "opus",
+    "strongest": "fable",
+    "judgment": "opus",
+    "verify": "sonnet",
+    "panel": ["opus", "preset:\"Codex\""],
+    "panelFallback": ["opus", "sonnet"]
+  },
+  "efforts": ["low", "medium", "high", "xhigh", "max"],
+  "aliases": ["opus", "fable", "sonnet", "haiku"],
+  "roles": [
+    { "role": "feature, refactoring", "tier": "code", "skill": "poteto-mode" },
+    { "role": "bug-fix", "tier": "code", "skill": "poteto-mode" },
+    { "role": "perf-issue", "tier": "code", "skill": "poteto-mode" },
+    { "role": "hillclimb", "tier": "code", "skill": "poteto-mode" },
+    { "role": "hardest tasks", "tier": "strongest", "skill": "poteto-mode" },
+    { "role": "judgment and prose", "tier": "judgment", "skill": "poteto-mode" },
+    { "role": "how explorer", "tier": "code", "skill": "how" },
+    { "role": "how explainer", "tier": "judgment", "skill": "how" },
+    { "role": "why investigators", "tier": "code", "skill": "why" },
+    { "role": "why synthesizer", "tier": "judgment", "skill": "why" },
+    { "role": "reflect tooling", "tier": "code", "skill": "reflect" },
+    { "role": "reflect judgment, divergent, synthesizer", "tier": "judgment", "skill": "reflect" },
+    { "role": "swarm workers", "tier": "verify", "skill": "swarm" },
+    { "role": "arena runners", "tier": "panel", "skill": "arena" },
+    { "role": "arena cross-judge pool", "tier": "panel", "skill": "arena" },
+    { "role": "architect runners", "tier": "panel", "skill": "architect" },
+    { "role": "interrogate reviewers", "tier": "panel", "skill": "interrogate" }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "maestri-pstack",
+  "displayName": "maestri-pstack (pstack for Maestri)",
+  "version": "0.1.0",
+  "description": "Lauren Tan's pstack with its Cursor mechanics rewritten for Maestri: short subagents run in the chat, cross-family panels and file-writing work run as Maestri teammates on floors, and loops run as routines.",
+  "author": {
+    "name": "Lucas Polizeli"
+  },
+  "license": "MIT",
+  "keywords": ["maestri", "pstack", "poteto-mode", "workflow", "subagents", "claude-code", "skills"],
+  "agents": [
+    "./agents/comment-sicko.md",
+    "./agents/poteto-agent.md",
+    "./agents/thermo-nuclear-code-quality-review-subagent.md",
+    "./agents/thermo-nuclear-review-subagent.md"
+  ]
+}

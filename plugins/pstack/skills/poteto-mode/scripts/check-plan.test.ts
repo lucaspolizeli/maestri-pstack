@@ -20,7 +20,7 @@ ${rule}
 ### PR mechanics
 ### Verdict and merge
 ### Boot recipe
-\`git show origin/main:\` /loop 1h status message
+Read these from the plugin root. \`maestri routine create --every 1h\` status message
 
 ## PR 1
 **Depends on.** None.

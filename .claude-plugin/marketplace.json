@@ -1,0 +1,15 @@
+{
+  "name": "maestri-pstack",
+  "owner": {
+    "name": "Lucas Polizeli"
+  },
+  "description": "pstack for Maestri: Lauren Tan's pstack rewritten so subagents, panels, loops and PR watches run as Maestri teammates, floors and routines.",
+  "plugins": [
+    {
+      "name": "maestri-pstack",
+      "source": "./plugins/pstack",
+      "description": "pstack for Maestri on Claude Code. Original pstack by Lauren Tan (poteto).",
+      "version": "0.1.0"
+    }
+  ]
+}

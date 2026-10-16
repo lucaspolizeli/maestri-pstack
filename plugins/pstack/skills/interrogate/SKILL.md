@@ -24,16 +24,16 @@ Before spawning reviewers, state the intent in one clear paragraph from the user
 
 ## Step 3, Spawn Reviewers
 
-Launch all reviewers in a single message with the Task tool, one per entry on the `interrogate reviewers` line in `~/.cursor/rules/pstack-models.mdc`, labeled Reviewer A, B, and so on to match the entry count. If the rule or that line is missing, use the table defaults.
+Launch all reviewers at once, one per entry on the `interrogate reviewers` line in the model sheet (`~/.config/maestri-pstack/models.md`), labeled Reviewer A, B, and so on to match the entry count. If the sheet or that line is missing, use the table defaults. If `maestri preset list` has no `Codex` preset, Reviewer B runs on `sonnet`, and you say once that the panel has only one family.
 
 | Subagent | Default model |
 |----------|---------------|
-| Reviewer A | `claude-opus-5-5-xhigh` |
-| Reviewer B | `grok-4.7-xhigh-fast` |
+| Reviewer A | `opus` |
+| Reviewer B | `preset:"Codex"` |
 
-Each reviewer gets `subagent_type: generalPurpose`, `readonly: true`, and `model` set to its configured entry, or its table default when there is no configured line. Omit `model` for an `auto` or `inherit-parent` entry, so that reviewer runs on the parent model.
+Each reviewer dispatches by the rules in the plugin's `CONTEXT.md`, and its brief says "Do not edit files." An alias entry runs as a background `Agent` call with no `subagent_type` and `model` set to the alias. A `preset:` entry runs as a recruit with that preset. Send the local reviewers in one message and the canvas reviewers through one `maestri ask --batch`. Run `maestri list` first, and reuse a teammate that already reviews with `maestri recruit --replace`. Omit `model` for an `inherit-parent` entry, so that reviewer runs on the parent model.
 
-If the Task tool rejects a configured entry, run that reviewer on its family's table default and say so. Families go by prefix: `claude-*`, and `grok-*` with `cursor-grok-*` and `composer-*`. A refused `composer-*` entry runs on Reviewer B's default. With no family match, use Reviewer A's default. If it rejects a table default, spawn with the closest equivalent from the valid slugs in its error message (prefer the same family and reasoning tier), and open a separate PR to update the default table. Do not block the review on the slug issue. Never treat an alias entry as a rejected slug or apply either fallback to it.
+If the `Agent` tool rejects an alias, run that reviewer on `opus` and say so. If a preset entry names a preset that `maestri preset list` does not print, run that reviewer on `sonnet` and say so. The family of an alias is Claude, and the family of a preset is the preset. Do not block the review on a model issue. Never treat an `inherit-parent` entry as rejected or apply either fallback to it.
 
 Read `references/reviewer-prompt.md` and fill in the same template for every reviewer with the stated intent, the diff or file contents, the rubric from `references/rubric.md`, and the code-quality lens from `references/code-quality-review.md`. Pick each subagent's reasoning level and fast or standard speed for the job, per the Subagents section of the **poteto-mode** skill.
 
