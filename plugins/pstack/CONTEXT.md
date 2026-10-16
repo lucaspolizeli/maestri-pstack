@@ -5,7 +5,7 @@ maestri-pstack is Lauren Tan's pstack with its Cursor mechanics rewritten for Ma
 ## Glossary
 
 - **Host** - Claude Code running in a Maestri terminal. v1 supports no other host.
-- **Plugin root** - the installed `plugins/pstack/` directory, `${CLAUDE_PLUGIN_ROOT}` in hooks. Skills name files under it as `<plugin root>/skills/...`.
+- **Plugin root** - the directory two levels above a skill's base directory: the installed copy of `plugins/pstack/`, which holds `CONTEXT.md` and `models.json`. Skills write it as `<plugin root>`.
 - **Model sheet** - `~/.config/maestri-pstack/models.md`, one role per line. `/setup-pstack` writes it. A role with no line keeps the default in its skill's Models section.
 - **Sheet value** - one of:
   - a Claude alias with an optional effort: `opus`, `sonnet @high`, `fable @xhigh`;
@@ -30,16 +30,20 @@ maestri-pstack is Lauren Tan's pstack with its Cursor mechanics rewritten for Ma
 | verify | `sonnet` | swarm workers and verification |
 | panel | `opus, preset:"Codex"` | the cross-family panel (opus / grok) |
 
-A panel must span two model families, so its second member is a Maestri preset. When `maestri preset list` has no preset with that name, the panel runs `opus, sonnet` and says once that the panel has only one family.
+A panel must span two model families, so its second member is a Maestri preset.
+
+**Panel fallback.** When a panel member is a preset that cannot run (`maestri preset list` does not print it, or this terminal is not the Maestro), replace it with the first Claude alias not already in the panel: `sonnet`, then `opus`, then `fable`. Say once that the panel has only one family. The skills point here instead of restating the rule.
 
 ## Choosing the dispatch
 
 Canvas dispatch needs Maestro Mode. Only the Maestro terminal can run `maestri recruit`, `maestri preset list`, `maestri role`, `maestri floor create`, `maestri floor list` and `maestri routine`. Any terminal can run `maestri list`, `maestri ask`, `maestri check`, `maestri note` and `maestri floor status`. Check once per chat: run `maestri preset list`. If it fails with "This terminal is not the Maestro", this chat has no canvas dispatch. Say so once, and use these fallbacks:
 
 - Every subagent runs local. A delegate that writes files gets `isolation: "worktree"` on its `Agent` call in place of a floor.
-- A panel member on a preset runs on `sonnet`, so an `opus, preset:"Codex"` panel runs `opus, sonnet`. Say once that the panel has only one family.
+- A panel member on a preset follows the panel fallback above.
 - A fixed-cadence routine becomes Claude Code's `/loop <interval>`.
 - Work that must outlive the turn goes to the user, who can run it from the Maestro terminal.
+
+The orchestrate, autopilot-full and multi-phase-plan playbooks have no fallback. Their programs run for days, recover from restarts through floors, and arm their audit as a routine, and a local subagent or `/loop` dies with the chat. Outside the Maestro they stop and ask the user to start them from the Maestro terminal.
 
 When this terminal is the Maestro, use the role's sheet value, and check these rules in order:
 

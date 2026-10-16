@@ -8,6 +8,8 @@ disable-model-invocation: true
 
 `<plugin root>` is the directory two levels above this skill's base directory. It holds `CONTEXT.md` and `models.json`.
 
+Recruits, floors, and routines need this terminal to be the Maestro. Without it, use the fallbacks in `<plugin root>/CONTEXT.md`.
+
 Mine the current conversation for durable learnings, then route them into skill edits.
 
 Invoke when the user says "reflect" or "/reflect". Skip when the conversation is trivial, off-topic, or already covered by an existing skill the parent followed correctly. One-offs are not learnings.
@@ -26,7 +28,7 @@ That covers the session (`<session-id>.jsonl`) and subagent (`<session-id>/subag
 
 One message, three background `Agent` calls with no `subagent_type`, so they keep this session's MCP tools. Reviewers need MCP access to look up the tickets, chat threads, and observability traces the transcript references, so do not restrict their tools. Each template already tells the reviewer not to modify files.
 
-Each reviewer and the synthesizer name a role line in the model sheet (`~/.config/maestri-pstack/models.md`) and a default. Set `model` to that line's value, or to the default if the sheet or the line is missing. Leave `model` unset when the value is `inherit-parent`. A `preset:` value runs that reviewer as a recruit, per `<plugin root>/CONTEXT.md`, with the transcript path in its brief. If the `Agent` tool rejects an alias, use the default and say so. Pick each subagent's reasoning level and fast or standard speed for the job, per the Subagents section of the **poteto-mode** skill.
+Each reviewer and the synthesizer name a role line in the model sheet (`~/.config/maestri-pstack/models.md`) and a default. Set `model` to that line's value, or to the default if the sheet or the line is missing. Leave `model` unset when the value is `inherit-parent`. A `preset:` value runs that reviewer as a recruit, per `<plugin root>/CONTEXT.md`, with the transcript path in its brief. If the `Agent` tool rejects an alias, use the default and say so. Pick each subagent's reasoning level for the job, per the Subagents section of the **poteto-mode** skill.
 
 | Lens | Role line | Default `model` | Prompt template |
 |---|---|---|---|

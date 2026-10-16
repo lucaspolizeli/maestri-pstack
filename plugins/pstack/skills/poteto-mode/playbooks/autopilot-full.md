@@ -1,6 +1,6 @@
 ### Autopilot-full
 
-Recruits, floors, and routines need this terminal to be the Maestro. Without it, use the fallbacks in `<plugin root>/CONTEXT.md`.
+This playbook needs Maestro Mode. Run `maestri preset list` first. If it fails with "This terminal is not the Maestro", stop and ask the user to start it from the Maestro terminal.
 
 **You own the verdicts, never the PRs. One owner carries each PR from build to merge, and nothing merges until your swarm, which never wrote the code, has proven the code that lands.**
 

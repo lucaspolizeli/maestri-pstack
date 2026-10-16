@@ -1,6 +1,6 @@
 ### Multi-phase or multi-PR plan
 
-Recruits, floors, and routines need this terminal to be the Maestro. Without it, use the fallbacks in `<plugin root>/CONTEXT.md`.
+This playbook needs Maestro Mode. Run `maestri preset list` first. If it fails with "This terminal is not the Maestro", stop and ask the user to start it from the Maestro terminal.
 
 **You own the plan, not the code. The plan is a checklist an owner runs box by box and the operator audits from the evidence.** The plan is the deliverable. Do not implement.
 

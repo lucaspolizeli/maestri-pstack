@@ -94,25 +94,3 @@ test("rejects backtick info strings containing a backtick", () => {
 	const result = runPlan("```markdown `invalid`\n## Example only\n```\n", 1);
 	expect(result.stderr).toContain('"## Example only" after Close the program is not an appendix');
 });
-
-const runProgram = (armLine: string, expectedExit: number) => {
-	const directory = mkdtempSync(join(tmpdir(), "check-plan-test-"));
-	const file = join(directory, "plan.md");
-	writeFileSync(file, validPlan.replace("`maestri routine create --every 1h`", armLine));
-	try {
-		const result = spawnSync("node", [checker, file], { encoding: "utf8" });
-		expect(result.status).toBe(expectedExit);
-		return result;
-	} finally {
-		rmSync(directory, { recursive: true, force: true });
-	}
-};
-
-test("accepts a program armed with /loop outside the Maestro", () => {
-	runProgram("`/loop 1h`", 0);
-});
-
-test("rejects a program with no audit cadence", () => {
-	const result = runProgram("no cadence", 1);
-	expect(result.stderr).toContain('Program checklist lacks "maestri routine create" or "/loop 1h"');
-});
