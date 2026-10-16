@@ -34,7 +34,7 @@ When the model sheet is missing and it matters, ask whether the user wants to pi
 
 ## Get set up
 
-1. Install the `maestri-pstack` plugin in Claude Code, per the install steps in the maestri-pstack README, and run Claude Code in a Maestri terminal.
+1. Install the `maestri-pstack` plugin in Claude Code, per the install steps in the [maestri-pstack README](https://github.com/lucaspolizeli/maestri-pstack#install), and run Claude Code in a Maestri terminal.
 2. Run [`/setup-pstack`](../setup-pstack/SKILL.md). It asks for a reasoning budget, maps a Claude model or a Maestri preset to each role, writes the model sheet, and creates the Maestri role `poteto-agent`. The sheet applies to new chats.
 3. Start a real task with `/poteto-mode`, a goal, and a check that can pass or fail.
 

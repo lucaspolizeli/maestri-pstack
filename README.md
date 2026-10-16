@@ -14,7 +14,7 @@ maestri-pstack works inside a Maestri terminal that runs Claude Code. Routines a
 ## Install
 
 ```shell
-claude plugin marketplace add /path/to/maestri-pstack
+claude plugin marketplace add lucaspolizeli/maestri-pstack
 claude plugin install maestri-pstack@maestri-pstack
 ```
 
