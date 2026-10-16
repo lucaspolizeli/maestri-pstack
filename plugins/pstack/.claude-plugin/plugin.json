@@ -1,7 +1,7 @@
 {
   "name": "maestri-pstack",
   "displayName": "maestri-pstack (pstack for Maestri)",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Lauren Tan's pstack with its Cursor mechanics rewritten for Maestri: every subagent runs as a Maestri recruit with a pstack role, builders work on git floors, verifiers drive Maestri portals, and loops run as routines.",
   "author": {
     "name": "Lucas Polizeli"
