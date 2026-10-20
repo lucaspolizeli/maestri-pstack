@@ -61,13 +61,9 @@ elif raw=$(gh pr list --author "@me" --state all --limit 1000 \
 fi
 [ -s "$prs" ] || echo "[]" > "$prs"
 
-# Claude Code keeps transcripts in ~/.claude/projects/<slug>/*.jsonl, where the
-# slug is the session's working directory with every non-alphanumeric
-# character replaced by "-". A chat in the main checkout lands under its slug,
-# and a chat started inside a worktree (a Maestri floor) lands under that one.
-projects="$HOME/.claude/projects"
-slug() { printf '%s' "$1" | sed 's#[^A-Za-z0-9]#-#g'; }
-main_transcripts="$projects/$(slug "$main_wt")"
+# Transcripts dir: ~/.cursor/projects/<slugified-repo-path>/agent-transcripts.
+slug=$(printf '%s' "$main_wt" | sed 's#^/##; s#/#-#g')
+transcripts="$HOME/.cursor/projects/$slug/agent-transcripts"
 now=$(date +%s)
 
 echo "# base: $base"
@@ -107,13 +103,8 @@ git worktree list --porcelain | awk '/^worktree /{print $2}' | while read -r wt;
 	# Most recent chat whose transcript operated in this worktree. Match path
 	# followed by "/" or a quote so glint-482 does not match glint-482-r37.
 	last="-"; last_ts=0
-	dirs=""
-	for d in "$main_transcripts" "$projects/$(slug "$wt")"; do
-		[ -d "$d" ] && dirs="$dirs $d"
-	done
-	if [ -n "$dirs" ]; then
-		# shellcheck disable=SC2086 # dirs is a space-separated list of paths without spaces
-		f=$(rg -l -g '*.jsonl' -e "${wt}/" -e "${wt}\"" $dirs 2>/dev/null \
+	if [ -d "$transcripts" ]; then
+		f=$(rg -l -e "${wt}/" -e "${wt}\"" "$transcripts" 2>/dev/null \
 			| xargs stat -f '%m %N' 2>/dev/null | sort -rn | head -1)
 		if [ -n "$f" ]; then last_ts=$(echo "$f" | awk '{print $1}')
 			last=$(date -r "$last_ts" '+%Y-%m-%d' 2>/dev/null); fi
@@ -127,10 +118,6 @@ git worktree list --porcelain | awk '/^worktree /{print $2}' | while read -r wt;
 			else bucket=review; fi ;;
 		esac ;;
 	esac
-
-	# A worktree under .maestri/floors/ belongs to a Maestri floor. Remove it with
-	# `maestri floor delete`, never `git worktree remove`.
-	case "$wt" in */.maestri/floors/*) bucket="$bucket:floor" ;; esac
 
 	printf "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" \
 		"$size" "$age" "$merged" "$dirty" "$remote" "$pr" "$last" "$bucket" "$wt"

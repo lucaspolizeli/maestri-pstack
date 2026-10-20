@@ -6,10 +6,6 @@ disable-model-invocation: true
 
 # Interrogate
 
-`<plugin root>` is the directory two levels above this skill's base directory. It holds `CONTEXT.md` and `models.json`.
-
-Recruits, floors, and routines need this terminal to be the Maestro. Without it, use the fallbacks in `<plugin root>/CONTEXT.md`.
-
 Spawn one reviewer per configured model to adversarially review code changes. The adversarial signal comes from model diversity, not assigned personas. The deliverable is a synthesized verdict. Do NOT auto-apply changes.
 
 ## Step 1, Scope
@@ -28,18 +24,18 @@ Before spawning reviewers, state the intent in one clear paragraph from the user
 
 ## Step 3, Spawn Reviewers
 
-Launch all reviewers at once, one per entry on the `interrogate reviewers` line in the model sheet (`~/.config/maestri-pstack/models.md`), labeled Reviewer A, B, and so on to match the entry count. If the sheet or that line is missing, use the table defaults. When a preset entry cannot run, follow the panel fallback in `<plugin root>/CONTEXT.md`.
+Launch all reviewers in a single message with the Task tool, one per entry on the `interrogate reviewers` line in `~/.cursor/rules/pstack-models.mdc`, labeled Reviewer A, B, and so on to match the entry count. If the rule or that line is missing, use the table defaults.
 
 | Subagent | Default model |
 |----------|---------------|
-| Reviewer A | `opus` |
-| Reviewer B | `preset:"Codex"` |
+| Reviewer A | `claude-opus-5-5-xhigh` |
+| Reviewer B | `grok-4.7-xhigh-fast` |
 
-Each reviewer is a `pstack-reviewer` recruit, dispatched by `<plugin root>/CONTEXT.md`. An alias entry runs `claude` on that alias, a `preset:` entry runs that preset, and an `inherit-parent` entry is a copy of you. Recruit them all, brief them through one `maestri ask --batch`, and dismiss each once its findings are in. Outside the Maestro, each runs as a background `Agent` call with no `subagent_type`, and its brief says "Do not edit files."
+Each reviewer gets `subagent_type: generalPurpose`, `readonly: true`, and `model` set to its configured entry, or its table default when there is no configured line. Omit `model` for an `auto` or `inherit-parent` entry, so that reviewer runs on the parent model.
 
-If the recruit or the `Agent` tool rejects an alias, run that reviewer on `opus` and say so. The family of an alias is Claude, and the family of a preset is the preset. Do not block the review on a model issue. Never treat an `inherit-parent` entry as rejected or apply either fallback to it.
+If the Task tool rejects a configured entry, run that reviewer on its family's table default and say so. Families go by prefix: `claude-*`, and `grok-*` with `cursor-grok-*` and `composer-*`. A refused `composer-*` entry runs on Reviewer B's default. With no family match, use Reviewer A's default. If it rejects a table default, spawn with the closest equivalent from the valid slugs in its error message (prefer the same family and reasoning tier), and open a separate PR to update the default table. Do not block the review on the slug issue. Never treat an alias entry as a rejected slug or apply either fallback to it.
 
-Read `references/reviewer-prompt.md` and fill in the same template for every reviewer with the stated intent, the diff or file contents, the rubric from `references/rubric.md`, and the code-quality lens from `references/code-quality-review.md`. Pick each subagent's reasoning level for the job, per the Subagents section of the **poteto-mode** skill.
+Read `references/reviewer-prompt.md` and fill in the same template for every reviewer with the stated intent, the diff or file contents, the rubric from `references/rubric.md`, and the code-quality lens from `references/code-quality-review.md`. Pick each subagent's reasoning level and fast or standard speed for the job, per the Subagents section of the **poteto-mode** skill.
 
 ## Step 4, Synthesize
 

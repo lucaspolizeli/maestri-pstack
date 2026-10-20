@@ -1,44 +1,23 @@
 # maestri-pstack
 
-pstack for [Maestri](https://maestri.app). It is Lauren Tan's (poteto's) [pstack](https://github.com/cursor/plugins/tree/main/pstack), with its Cursor mechanics rewritten for Maestri on Claude Code.
-
-The skill text is Lauren's. Only what names a Cursor mechanism changes. [CONTEXT.md](plugins/pstack/CONTEXT.md) defines the Maestri form:
-
-- Every subagent runs as a Maestri teammate in its own terminal, with a pstack role for its function (builder, reviewer, researcher, verifier). The run closes each one when its work is in.
-- A builder that writes files works on its own git floor.
-- A verifier drives web pages through a Maestri portal and mobile apps through a device portal.
-- A panel that needs another model family, such as Codex, recruits that member through a Maestri preset, so `interrogate`, `arena` and `architect` panels can mix Claude and Codex.
-- A fixed-cadence loop runs as a Maestri routine. A loop until a check passes runs as Claude Code's `/loop`.
-
-maestri-pstack works inside a Maestri terminal that runs Claude Code. Recruits, roles, floors and routines need Maestro Mode on the coordinating terminal. Outside it, subagents fall back to Claude Code's `Agent` tool.
-
-In a Maestri terminal, a SessionStart hook routes non-trivial tasks to `poteto-mode`, and on the Maestro a PreToolUse hook denies a maestri-pstack subagent on the `Agent` tool, so it runs as a recruit.
+Lauren Tan's [pstack](https://github.com/cursor/plugins/tree/main/pstack), run by a Codex Maestro in [Maestri](https://maestri.app). The coordinator uses Maestri recruits, presets, git floors, notes, and portals to carry out pstack workflows. The copied pstack skills are pinned to Cursor's `ddf824aff1e55ba14bd666b30bce3fc69962abe6` commit (2026-10-19); the Maestri behavior lives in [MAESTRI.md](plugins/pstack/MAESTRI.md).
 
 ## Install
 
-```shell
-claude plugin marketplace add lucaspolizeli/maestri-pstack
-claude plugin install maestri-pstack@maestri-pstack
-```
-
-Then run `/maestri-pstack:setup-pstack` once per machine. It writes the model sheet, `~/.config/maestri-pstack/models.md`, and creates the four pstack roles in Maestri. Without a sheet, every role runs on the defaults in [models.json](plugins/pstack/models.json).
+Run `scripts/install.sh` from this repository. It copies the `maestri-pstack` skill into `~/.agents/skills/maestri-pstack` for Codex. Run it again after updating this repository. The installer moves the previous installed copy to a timestamped backup and prints its path.
 
 ## Use
 
-```text
-/maestri-pstack:poteto-mode fix the search filter resetting when I change pages
-```
+In a Codex terminal with Maestro enabled, invoke `$maestri-pstack` with a task. It starts with pstack's `poteto-mode`. Name a skill after the invocation to use it directly, for example `$maestri-pstack interrogate this diff`.
 
-`poteto-mode` matches the task to a playbook and opens the other skills from there.
+Run `$maestri-pstack setup` before using a multi-model panel. It maps pstack roles to the presets in `maestri preset list` and records each preset's model family. Panels can then mix Claude, Codex, Grok, Kimi, GLM, or any other agent that Maestri can launch. A model needs a working Maestri preset before pstack can recruit it.
 
-## Upstream
+The coordinator and recruits share the local filesystem. A builder that writes files works in a Maestri git floor. Read-only reviewers and researchers work from the checkout named in their brief. The package does not change your Maestri presets.
 
-[UPSTREAM.md](UPSTREAM.md) pins the upstream commit. `node tools/check-cursorisms.mjs` fails when plugin text still names a Cursor mechanism.
+## Verify
 
-## License
+From this repository, run `scripts/check.sh`. It checks skill metadata, configuration validation, shell syntax, and the copied upstream Bun tests and typecheck.
 
-MIT. See [LICENSE](LICENSE). It builds on:
+## Source and license
 
-- [pstack](https://github.com/cursor/plugins/tree/main/pstack), MIT, © 2026 Lauren Tan (poteto). See [LICENSE-pstack](LICENSE-pstack).
-- [thermos](https://github.com/cursor/plugins/tree/main/thermos) and [cursor-team-kit](https://github.com/cursor/plugins/tree/main/cursor-team-kit), MIT, © 2026 Cursor. See [LICENSE-thermos](LICENSE-thermos) and [LICENSE-cursor-team-kit](LICENSE-cursor-team-kit).
-- [t3-pstack](https://github.com/chhoumann/t3-pstack) and [pstack-claude](https://github.com/michael-denyer/pstack-claude) as references for the port's approach.
+The pstack skill and agent text under `plugins/pstack/skills` and `plugins/pstack/agents` comes from [cursor/plugins](https://github.com/cursor/plugins/tree/main/pstack), MIT licensed by Lauren Tan. See [the upstream license](plugins/pstack/LICENSE). The Maestri adapter is maintained in this repository.

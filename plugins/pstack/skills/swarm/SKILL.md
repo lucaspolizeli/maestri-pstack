@@ -6,10 +6,6 @@ disable-model-invocation: true
 
 # Swarm
 
-`<plugin root>` is the directory two levels above this skill's base directory. It holds `CONTEXT.md` and `models.json`.
-
-Recruits, floors, and routines need this terminal to be the Maestro. Without it, use the fallbacks in `<plugin root>/CONTEXT.md`.
-
 ## Start
 
 Open a todolist with one entry per phase before launching anything.
@@ -23,14 +19,14 @@ Open a todolist with one entry per phase before launching anything.
 
 1. State the done predicate and the artifact or report the swarm must return.
 2. Choose the shape. Partition into slices, race N workers on identical briefs, or mix both. For a race or mixed shape, declare `first pass`, `rank all`, or `best-of` before spawning.
-4. Pick the worker model from the `swarm workers` line in the model sheet (`~/.config/maestri-pstack/models.md`). If the sheet or that line is missing, use `sonnet`. For `inherit-parent`, the workers run on the parent model. If the recruit or the `Agent` tool rejects an alias, use the default and say so. For a model race, name each arm's model up front. Pick each subagent's reasoning level for the job, per the Subagents section of the **poteto-mode** skill.
+4. Pick the worker model from the `swarm workers` line in `~/.cursor/rules/pstack-models.mdc`. If the rule or that line is missing, use `grok-4.7-xhigh-fast`. For `auto` or `inherit-parent`, omit `model` so the workers run on the parent model. If the Task tool rejects a slug, use the default and say so. If it rejects the default, use the closest valid slug of the same family from its error message. For a model race, name each arm's model up front. Pick each subagent's reasoning level and fast or standard speed for the job, per the Subagents section of the **poteto-mode** skill.
 5. Give each worker its own writable output when it writes. When workers verify or measure commits, each brief names the exact SHAs. A measurement brief also names the method (sample count, what one sample is, order). The worker records both in its result.
 
 ## Phase B: Fan out
 
-Spawn all N workers at once. Each worker is a recruit on the step 4 model, dispatched by `<plugin root>/CONTEXT.md`. A worker that writes files is a `pstack-builder` on its own git floor (`maestri floor create --branch`, then `maestri recruit --floor`). A worker that proves behavior on a page, an app, or a CLI is a `pstack-verifier`, and drives web and mobile through a Maestri portal. A worker that only reads or measures is a `pstack-researcher`. Brief them all through one `maestri ask --batch`, and dismiss each once its result is in. Outside the Maestro, each worker is a background `Agent` call with no `subagent_type`, all in one message.
+Spawn all N workers in one message with `subagent_type: generalPurpose`, `environment: "cloud"`, `run_in_background: true`, and the step 4 model, left unset for `auto` or `inherit-parent`. Use `environment: "local"` only when the worker needs access to something on the user's computer.
 
-When a worker must start from a non-default branch, create its floor with `maestri floor create "<slice>" --existing-branch --branch <branch>`, or `--copy` when the ground floor has that branch checked out. Outside the Maestro, run `git worktree add <path> <branch>` yourself and name that path in the worker's brief.
+When a worker must start from a non-default pushed branch, pass `cloud_base_branch`.
 
 Every brief stands alone. Include the goal, scope, exact slice or race arm, how to verify, and what to report. Reports use `PASS`, `ISSUES`, or `BLOCKED` with evidence. A worker that can prove a defect reports `ISSUES` and lists every issue it can prove, not only the first.
 

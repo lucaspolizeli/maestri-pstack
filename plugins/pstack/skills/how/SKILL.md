@@ -6,13 +6,9 @@ disable-model-invocation: true
 
 # How
 
-`<plugin root>` is the directory two levels above this skill's base directory. It holds `CONTEXT.md` and `models.json`.
-
-Recruits, floors, and routines need this terminal to be the Maestro. Without it, use the fallbacks in `<plugin root>/CONTEXT.md`.
-
 Explore the codebase to answer "how does X work?" questions. Produce architectural explanations at the level of a senior engineer onboarding onto a subsystem, enough to build a working mental model, not so much that it reads like annotated source code.
 
-Every spawn is a `pstack-researcher` recruit, dispatched by `<plugin root>/CONTEXT.md`, and dismissed once its result is in. Outside the Maestro it is a background `Agent` call with no `subagent_type`, and its brief says "Do not edit files." Explorers use the `how explorer` line in the model sheet (`~/.config/maestri-pstack/models.md`, default `opus`), and every explainer uses the `how explainer` line (default `opus`). Run each spawn on that line's value, or on the default if the sheet or the line is missing. If the recruit or the `Agent` tool rejects an alias, use the default and say so. Pick each subagent's reasoning level for the job, per the Subagents section of the **poteto-mode** skill.
+Every spawn is a Task subagent with `subagent_type: generalPurpose` and `readonly: true`. Explorers use the `how explorer` line in the `pstack-models.mdc` rule (default `grok-4.7-xhigh-fast`), and every explainer uses the `how explainer` line (default `claude-opus-5-5-xhigh`). Set `model` to that line's value, or to the default if the rule or the line is missing. Leave `model` unset when the value is `auto` or `inherit-parent`. If the Task tool rejects a slug, use the default and say so. If it rejects the default, use the closest valid slug of the same family from its error message. Pick each subagent's reasoning level and fast or standard speed for the job, per the Subagents section of the **poteto-mode** skill.
 
 ## 1. Assess complexity
 
