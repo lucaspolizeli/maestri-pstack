@@ -74,6 +74,16 @@ def validate(config, available=None):
             errors.append(f"{role}: panel must have at least two seats")
         for seat in seats:
             check_seat(role, seat)
+        if role == "interrogate reviewers":
+            explicit_families = {
+                families[seat]
+                for seat in seats
+                if isinstance(seat, str) and isinstance(families.get(seat), str)
+            }
+            if "inherit-parent" in seats or len(explicit_families) < 2:
+                errors.append(
+                    f"{role}: panel requires explicit presets from at least two distinct families"
+                )
 
     return errors
 
@@ -87,7 +97,7 @@ def available_presets():
 
 def main():
     if len(sys.argv) not in (2, 3) or (len(sys.argv) == 3 and sys.argv[2] != "--live"):
-        print("usage: validate-config.py PATH [--live]", file=sys.stderr)
+        print("usage: validate_config.py PATH [--live]", file=sys.stderr)
         return 2
     try:
         config = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))

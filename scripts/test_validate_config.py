@@ -35,6 +35,24 @@ class ConfigValidationTests(unittest.TestCase):
                 config["roles"][role] = ["Codex"]
                 self.assertIn(role, " ".join(validate(config)))
 
+    def test_rejects_interrogate_reviewers_from_one_family(self):
+        config = valid_config()
+        config["families"]["Codex Second"] = "openai"
+        config["roles"]["interrogate reviewers"] = ["Codex", "Codex Second"]
+        self.assertIn("at least two distinct families", " ".join(validate(config)))
+
+    def test_rejects_inherited_interrogate_reviewers(self):
+        config = valid_config()
+        config["roles"]["interrogate reviewers"] = ["inherit-parent", "inherit-parent"]
+        self.assertIn("explicit presets", " ".join(validate(config)))
+
+    def test_accepts_same_family_generation_panels(self):
+        config = valid_config()
+        config["families"]["Codex Second"] = "openai"
+        for role in ("arena runners", "architect runners"):
+            config["roles"][role] = ["Codex", "Codex Second"]
+        self.assertEqual(validate(config), [])
+
     def test_accepts_single_cross_judge_choice(self):
         config = valid_config()
         config["roles"]["arena cross-judge pool"] = ["Codex"]
