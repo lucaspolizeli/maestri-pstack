@@ -5,7 +5,7 @@ description: Configure Maestri presets and model families for pstack roles, and 
 
 # Set up Maestri pstack
 
-Read `../MAESTRI.md` first. This setup runs from a Maestro terminal and writes `~/.config/maestri-pstack/presets.json`. It does not create or change Maestri presets; the user manages those in Maestri.
+Read `../../MAESTRI.md` first. This setup runs from a Maestro terminal and writes `~/.config/maestri-pstack/presets.json`. It does not create or change Maestri presets; the user manages those in Maestri.
 
 1. Run `maestri list`, `maestri preset list`, and `maestri role list`. Confirm `maestro: true` and record the exact available preset names. Read the existing JSON file if it exists. Preserve valid user choices on a rerun.
 2. Ask which available preset should run each role group. Let the user choose one default for code (`feature, refactoring`, `bug-fix`, `perf-issue`, `hillclimb`), one for difficult work, one for judgment, and one for verification, then offer overrides for individual roles. `inherit-parent` is valid for every single-worker role. Do not assume a CLI or model is available merely because its company or model name was mentioned.

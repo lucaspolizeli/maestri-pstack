@@ -1,23 +1,23 @@
 # maestri-pstack
 
-Lauren Tan's [pstack](https://github.com/cursor/plugins/tree/main/pstack), run by a Codex Maestro in [Maestri](https://maestri.app). The coordinator uses Maestri recruits, presets, git floors, notes, and portals to carry out pstack workflows. The copied pstack skills are pinned to Cursor's `ddf824aff1e55ba14bd666b30bce3fc69962abe6` commit (2026-10-19); the Maestri behavior lives in [MAESTRI.md](plugins/pstack/MAESTRI.md).
+Lauren Tan's [pstack](https://github.com/cursor/plugins/tree/main/pstack), run by a Claude or Codex Maestro in [Maestri](https://maestri.app). The copied pstack source is pinned to Cursor's `ddf824aff1e55ba14bd666b30bce3fc69962abe6` commit (2026-10-19); [MAESTRI.md](plugins/pstack/MAESTRI.md) describes the Maestri adaptation.
 
 ## Install
 
-Run `scripts/install.sh` from this repository. It copies the `maestri-pstack` skill into `~/.agents/skills/maestri-pstack` for Codex. Run it again after updating this repository. The installer moves the previous installed copy to a timestamped backup and prints its path.
+For Codex, run `scripts/install.sh`. It installs one discoverable skill at `~/.agents/skills/maestri-pstack` and stores the upstream source at `~/.local/share/maestri-pstack`. Run it again after updating the repository. Previous copies are backed up outside the skill search directory.
+
+For Claude Code, run `claude plugin install maestri-pstack --marketplace . --scope user` from this repository, or load `plugins/pstack` as a local plugin. After publishing the marketplace, `/plugin install maestri-pstack --marketplace lucaspolizeli/maestri-pstack` works in Claude Code. The plugin exposes `/maestri-pstack:run` and `/maestri-pstack:setup`.
 
 ## Use
 
-In a Codex terminal with Maestro enabled, invoke `$maestri-pstack` with a task. It starts with pstack's `poteto-mode`. Name a skill after the invocation to use it directly, for example `$maestri-pstack interrogate this diff`.
+In a Maestri terminal with Maestro enabled, invoke `$maestri-pstack` in Codex or `/maestri-pstack:run` in Claude. A named skill can follow the invocation, such as `interrogate this diff`. The default entry selects a pstack playbook through `poteto-mode`.
 
-Run `$maestri-pstack setup` before using a multi-model panel. It maps pstack roles to the presets in `maestri preset list` and records each preset's model family. Panels can then mix Claude, Codex, Grok, Kimi, GLM, or any other agent that Maestri can launch. A model needs a working Maestri preset before pstack can recruit it.
-
-The coordinator and recruits share the local filesystem. A builder that writes files works in a Maestri git floor. Read-only reviewers and researchers work from the checkout named in their brief. The package does not change your Maestri presets.
+Run setup before a multi-model panel. It maps pstack seats to presets from `maestri preset list` and records each preset's model family. Panels can mix Claude, Codex, Grok, Kimi, GLM, and other runnable Maestri agents when matching presets exist. Builders work in isolated git floors; reviewers and researchers inspect a named checkout; verifiers use portals or real CLI surfaces.
 
 ## Verify
 
-From this repository, run `scripts/check.sh`. It checks skill metadata, configuration validation, shell syntax, and the copied upstream Bun tests and typecheck.
+Run `scripts/check.sh`. It checks configuration validation, installer behavior, shell syntax, upstream Bun tests, and type checking. Run `claude plugin validate plugins/pstack` to validate the Claude package.
 
 ## Source and license
 
-The pstack skill and agent text under `plugins/pstack/skills` and `plugins/pstack/agents` comes from [cursor/plugins](https://github.com/cursor/plugins/tree/main/pstack), MIT licensed by Lauren Tan. See [the upstream license](plugins/pstack/LICENSE). The Maestri adapter is maintained in this repository.
+Upstream skills and agent text live under `plugins/pstack/source/`, copied from [cursor/plugins](https://github.com/cursor/plugins/tree/main/pstack), MIT licensed by Lauren Tan. See [the upstream license](plugins/pstack/LICENSE). The Maestri adapter is maintained here.

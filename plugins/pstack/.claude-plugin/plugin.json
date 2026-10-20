@@ -1,0 +1,7 @@
+{
+  "name": "maestri-pstack",
+  "version": "0.1.0",
+  "description": "Cursor pstack playbooks orchestrated through Maestri",
+  "author": { "name": "Maestri pstack contributors" },
+  "license": "MIT"
+}

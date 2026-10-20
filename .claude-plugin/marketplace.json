@@ -1,0 +1,13 @@
+{
+  "name": "maestri-pstack",
+  "description": "Cursor pstack playbooks orchestrated through Maestri",
+  "owner": { "name": "Maestri pstack contributors" },
+  "plugins": [
+    {
+      "name": "maestri-pstack",
+      "source": "./plugins/pstack",
+      "version": "0.1.0",
+      "description": "Cursor pstack playbooks orchestrated through Maestri"
+    }
+  ]
+}

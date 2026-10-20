@@ -1,4 +1,8 @@
 import unittest
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "plugins" / "pstack" / "scripts"))
 
 from validate_config import PANEL_ROLES, SINGLE_ROLES, validate
 

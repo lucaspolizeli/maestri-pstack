@@ -1,22 +1,22 @@
 # Maestri execution reference
 
-Read this file once before running any skill in this package. The copied `skills/` tree is the Cursor pstack source. Keep its task logic and engineering standards. Interpret its Cursor tools and model slugs through the rules here. If an upstream step needs a capability Maestri lacks, state the specific missing capability and continue only when the remaining workflow still proves the requested result.
+Read this file once before running any skill in this package. The copied `source/skills/` tree is the Cursor pstack source. Keep its task logic and engineering standards. Interpret its Cursor tools and model slugs through the rules here. If an upstream step needs a capability Maestri lacks, state the specific missing capability and continue only when the remaining workflow still proves the requested result.
 
 ## Coordinator and source
 
 The coordinator runs in a Maestri terminal with Maestro enabled. Run `maestri list` first and confirm `maestro: true` under `You`. Use `maestri preset list` and `maestri role list` before recruiting. If Maestro is off, explain which step needs it and ask the user to enable Maestro on this terminal. Do not silently switch to an in-chat subagent because that would hide the work from the canvas.
 
-`<pstack>` in upstream text means this package's directory. Read another pstack skill at `<pstack>/skills/<name>/SKILL.md`. Read its references relative to that skill. A named agent persona is at `<pstack>/agents/<name>.md`. Other installed skills are invoked through the current host's skill mechanism when available. If a named external skill is unavailable, follow its concrete steps from the upstream source when those steps are present; do not invent its behavior.
+`<pstack>` in upstream text means this package's directory. Read another pstack skill at `<pstack>/source/skills/<name>/SKILL.md`. Read its references relative to that skill. A named agent persona is at `<pstack>/source/agents/<name>.md`. Other installed skills are invoked through the current host's skill mechanism when available. If a named external skill is unavailable, follow its concrete steps from the upstream source when those steps are present; do not invent its behavior.
 
 ## Presets and model families
 
-The user's optional model sheet is `~/.config/maestri-pstack/presets.json`. `setup/SKILL.md` creates it. The `roles` object maps each upstream role label to a Maestri preset name or `inherit-parent`. Panel roles contain an array; each entry gets one recruit. The `families` object maps a preset name to its actual model family, such as `claude`, `openai`, `grok`, `kimi`, or `glm`.
+The user's optional model sheet is `~/.config/maestri-pstack/presets.json`. `source/setup/SKILL.md` creates it. The `roles` object maps each upstream role label to a Maestri preset name or `inherit-parent`. Panel roles contain an array; each entry gets one recruit. The `families` object maps a preset name to its actual model family, such as `claude`, `openai`, `grok`, `kimi`, or `glm`.
 
-If the file or a role is missing, use `inherit-parent` for a single-worker role. A panel needs configured seats and families; run `setup/SKILL.md` before dispatching it. If only one family is available, state that limitation and use two seats only when the workflow needs two independent judgments. Never infer diversity from different preset names alone. `inherit-parent` recruits a copy of this terminal; a preset value recruits with `--preset "<name>"`. A preset controls its own model, account, and reasoning settings. Never send `/model` to a recruit or rewrite its preset during a run.
+If the file or a role is missing, use `inherit-parent` for a single-worker role. A panel needs configured seats and families; run `source/setup/SKILL.md` before dispatching it. If only one family is available, state that limitation and use two seats only when the workflow needs two independent judgments. Never infer diversity from different preset names alone. `inherit-parent` recruits a copy of this terminal; a preset value recruits with `--preset "<name>"`. A preset controls its own model, account, and reasoning settings. Never send `/model` to a recruit or rewrite its preset during a run.
 
 The following upstream labels are configuration keys: `feature, refactoring`, `bug-fix`, `perf-issue`, `hillclimb`, `hardest tasks`, `judgment and prose`, `how explorer`, `how explainer`, `why investigators`, `why synthesizer`, `reflect tooling`, `reflect judgment, divergent, synthesizer`, `swarm workers`, `arena runners`, `arena cross-judge pool`, `architect runners`, and `interrogate reviewers`. The `arena cross-judge pool` is a choice pool, not a fan-out: choose a family different from the parent's when possible.
 
-Upstream Cursor model slugs, effort tokens, `auto`, and its `pstack-models.mdc` rule do not select a Maestri agent. Use the role value above. If a skill names a model directly, look up the role that its Models section assigns and use that role's preset. If a configured preset is unavailable, stop that dispatch and repair the configuration through `setup/SKILL.md`. Never silently substitute another agent or claim a cross-family panel that did not run.
+Upstream Cursor model slugs, effort tokens, `auto`, and its `pstack-models.mdc` rule do not select a Maestri agent. Use the role value above. If a skill names a model directly, look up the role that its Models section assigns and use that role's preset. If a configured preset is unavailable, stop that dispatch and repair the configuration through `source/setup/SKILL.md`. Never silently substitute another agent or claim a cross-family panel that did not run.
 
 ## Dispatch
 
@@ -58,9 +58,27 @@ Do not equate a portal screenshot with browser console evidence. Start portal lo
 
 Keep upstream `Cursor` product instructions only when that product is itself the subject of the task. A step requiring Cursor Bugbot, a Cursor automation webhook, or a Cursor-only dashboard has no Maestri equivalent. Mark that step unavailable and evaluate whether the workflow's completion criterion still holds.
 
+## Partituras: execução dos playbooks
+
+Uma partitura descreve quem entra, em que ordem e qual evidência encerra cada etapa. O Maestro escolhe o playbook pela tarefa e mantém o estado no canvas; o playbook continua sendo a fonte das etapas técnicas. Não crie floors para uma leitura simples. Crie um floor por linha de implementação independente, usando uma branch por floor. O Maestro integra os resultados após ler diffs e evidências; nunca faça o merge apenas porque um agente declarou sucesso.
+
+| Playbook | Sequência no canvas | Floor e evidência |
+|---|---|---|
+| `investigation` / `how` / `why` | Pesquisador → Maestro sintetiza | Checkout nomeado; caminhos, fontes e limites da conclusão. |
+| `bug-fix` | Pesquisador (se a causa não está clara) → Builder → Verifier → Reviewer → Maestro | Um floor do builder; reprodução inicial, teste da correção e diff revisto. |
+| `feature` / `refactoring` | Maestro define escopo → Builder → Verifier → Reviewer → Maestro | Um floor por implementação independente; testes do projeto e comportamento observado. |
+| `arena` / `architect` | Builders independentes → Reviewers cruzados → Maestro escolhe | Floors distintos por candidato; comparação pelos mesmos critérios antes de integrar. |
+| `swarm` | Builders para tarefas separáveis → Maestro integra → Verifier | Floors distintos; interfaces combinadas antes do trabalho e teste integrado ao final. |
+| `interrogate` / `reflect` | Reviewers de famílias diferentes → Maestro julga achados | Checkout somente leitura; cada achado com arquivo/linha ou evidência observável. |
+
+O modelo de cada assento vem de `presets.json`. A role define autoridade, não a família do modelo. Com Claude como Maestro, o terminal Claude planeja, recruta, acompanha e integra; o mesmo esquema funciona com Codex como Maestro. Anote em uma nota conectada a partitura ativa, nomes dos floors, assentos, bloqueios e links de evidência quando o fluxo tiver mais de uma etapa.
+
+Para verificação web, conecte um portal ao floor cujo bundle será testado. Confirme que o servidor contém o código daquele floor, inicie `maestri portal logs-start` antes da reprodução quando console importa, e obtenha `snapshot`, ações e `screenshot` como evidência. Para iOS ou Android, rode `maestri portal devices`, escolha um simulador livre, crie o portal com `--simulator`, confira `portal info`, construa/instale o app naquele dispositivo e use `snapshot`, `launch` e ações em pixels. Um portal ou simulador ocupado não deve ser reutilizado por outro verifier. Não feche portais sem pedido explícito do usuário.
+
+
 ## Role prompts
 
-`setup/SKILL.md` creates these Maestri roles as global roles. The role is a stable boundary; task-specific files and instructions go in the brief.
+`source/setup/SKILL.md` creates these Maestri roles as global roles. The role is a stable boundary; task-specific files and instructions go in the brief.
 
 - `maestri-pstack-builder`: You implement the task in the checkout named in your brief. Read the named skill and persona files first. Run `maestri list` before collaborating. Keep your floor status current. Follow the project's instructions and required validation. Report your changes, checks, and remaining risks through the ask-back line. Do not land a floor or dismiss a teammate.
 - `maestri-pstack-reviewer`: You independently review the named work. Read the named skill and persona files first. Run `maestri list` before collaborating. Do not edit the repository. Report findings with file and line evidence through the ask-back line.
