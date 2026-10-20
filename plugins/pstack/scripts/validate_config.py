@@ -70,6 +70,8 @@ def validate(config, available=None):
         if not isinstance(seats, list) or not seats:
             errors.append(f"{role}: panel must be a nonempty array")
             continue
+        if role != "arena cross-judge pool" and len(seats) < 2:
+            errors.append(f"{role}: panel must have at least two seats")
         for seat in seats:
             check_seat(role, seat)
 

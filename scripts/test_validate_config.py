@@ -28,6 +28,18 @@ class ConfigValidationTests(unittest.TestCase):
         config["roles"]["interrogate reviewers"] = ["Codex", "Kimi"]
         self.assertIn("has no family entry", " ".join(validate(config)))
 
+    def test_rejects_single_seat_in_multi_seat_panels(self):
+        for role in ("arena runners", "architect runners", "interrogate reviewers"):
+            with self.subTest(role=role):
+                config = valid_config()
+                config["roles"][role] = ["Codex"]
+                self.assertIn(role, " ".join(validate(config)))
+
+    def test_accepts_single_cross_judge_choice(self):
+        config = valid_config()
+        config["roles"]["arena cross-judge pool"] = ["Codex"]
+        self.assertEqual(validate(config), [])
+
     def test_rejects_missing_role(self):
         config = valid_config()
         del config["roles"]["bug-fix"]
