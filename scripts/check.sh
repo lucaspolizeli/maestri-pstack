@@ -4,7 +4,8 @@ set -euo pipefail
 repo_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 bash -n "$repo_dir/scripts/install.sh" "$repo_dir/scripts/check.sh"
 python3 -m unittest discover -s "$repo_dir/scripts" -p 'test_*.py'
-python3 -m py_compile "$repo_dir/plugins/pstack/scripts/validate_config.py"
+python3 -m py_compile "$repo_dir/plugins/pstack/scripts/validate_config.py" "$repo_dir/scripts/check_source_links.py"
+python3 "$repo_dir/scripts/check_source_links.py"
 
 test_root=$(mktemp -d)
 trap 'rm -rf "$test_root"' EXIT

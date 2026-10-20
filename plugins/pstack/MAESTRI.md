@@ -6,11 +6,15 @@ Read this file once before running any skill in this package. The copied `source
 
 The coordinator runs in a Maestri terminal with Maestro enabled. Run `maestri list` first and confirm `maestro: true` under `You`. Use `maestri preset list` and `maestri role list` before recruiting. If Maestro is off, explain which step needs it and ask the user to enable Maestro on this terminal. Do not silently switch to an in-chat subagent because that would hide the work from the canvas.
 
-`<pstack>` in upstream text means this package's directory. Read another pstack skill at `<pstack>/source/skills/<name>/SKILL.md`. Read its references relative to that skill. A named agent persona is at `<pstack>/source/agents/<name>.md`. Other installed skills are invoked through the current host's skill mechanism when available. If a named external skill is unavailable, follow its concrete steps from the upstream source when those steps are present; do not invent its behavior.
+`<pstack>` in upstream text means this package's `source/` directory. Read another pstack skill at `<pstack>/skills/<name>/SKILL.md`, the original guides under `<pstack>/docs/`, and agent personas under `<pstack>/agents/`. The upstream README is `<pstack>/README.md`; this package's README describes the Maestri adapter. Resolve relative references from the source file. Other installed skills are invoked through the current host's skill mechanism when available. If a named external skill is unavailable, follow its concrete steps from the upstream source when those steps are present; do not invent its behavior.
+
+The source tree is reference material, not a set of separately installed commands. Read `source/setup/SKILL.md` instead of the Cursor `setup-pstack` skill. When `poteto-help` names a Cursor command or install path, use this package's `SKILL.md`, `MAESTRI.md`, and README for actual Maestri instructions. The copied `source/automations/` files document Cursor automations; they do not create a Maestri routine or webhook.
 
 ## Presets and model families
 
 The user's optional model sheet is `~/.config/maestri-pstack/presets.json`. `source/setup/SKILL.md` creates it. The `roles` object maps each upstream role label to a Maestri preset name or `inherit-parent`. Panel roles contain an array; each entry gets one recruit. The `families` object maps a preset name to its actual model family, such as `claude`, `openai`, `grok`, `kimi`, or `glm`.
+
+Before a multi-model run, check each selected preset with `maestri preset show "<name>"` as well as `maestri preset list`. The preset's account and command determine the actual agent. A successful JSON shape validation does not prove the account can answer; run a small read-only brief before claiming a new provider works. Do not infer the recruit's active CLI profile from the canvas account label when its command sets a separate config directory.
 
 If the file or a role is missing, use `inherit-parent` for a single-worker role. A panel needs configured seats and families; run `source/setup/SKILL.md` before dispatching it. If only one family is available, state that limitation and use two seats only when the workflow needs two independent judgments. Never infer diversity from different preset names alone. `inherit-parent` recruits a copy of this terminal; a preset value recruits with `--preset "<name>"`. A preset controls its own model, account, and reasoning settings. Never send `/model` to a recruit or rewrite its preset during a run.
 
@@ -57,6 +61,8 @@ Review each result and the actual diff yourself. Keep a recruit while it owns a 
 Do not equate a portal screenshot with browser console evidence. Start portal logs before reproducing a behavior that needs console inspection. For non-browser verification, the verifier uses the project's real CLI or test surface.
 
 Keep upstream `Cursor` product instructions only when that product is itself the subject of the task. A step requiring Cursor Bugbot, a Cursor automation webhook, or a Cursor-only dashboard has no Maestri equivalent. Mark that step unavailable and evaluate whether the workflow's completion criterion still holds.
+
+Project-local skills created by an upstream playbook must go into a directory that the active host actually loads. For Codex, use the project's `.agents/skills/`; for Claude Code, use `.claude/skills/` or this plugin's packaging. Check discovery in the intended host before declaring the skill complete. Do not write a new `.cursor/skills/` tree for a Maestri-only project. Transcript-dependent skills (`recall`, `reflect`, `show-me-your-work`, `automate-me`) may read only an identified transcript for the current session. If the host cannot identify it, say which step is blocked and use current-session evidence only; do not glob unrelated projects or claim a full transcript audit.
 
 ## Partituras: execução dos playbooks
 

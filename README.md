@@ -14,9 +14,11 @@ In a Maestri terminal with Maestro enabled, invoke `$maestri-pstack` in Codex or
 
 Run setup before a multi-model panel. It maps pstack seats to presets from `maestri preset list` and records each preset's model family. Panels can mix Claude, Codex, Grok, Kimi, GLM, and other runnable Maestri agents when matching presets exist. Builders work in isolated git floors; reviewers and researchers inspect a named checkout; verifiers use portals or real CLI surfaces.
 
+The upstream source, including its guide and Cursor automation examples, lives under `plugins/pstack/source/`. Those examples are reference material. `plugins/pstack/MAESTRI.md` defines the Maestri behavior and names steps that still need a host-specific equivalent. A provider is ready for a panel only after its Maestri preset and account answer a real brief; listing a model family in the JSON file is not enough.
+
 ## Verify
 
-Run `scripts/check.sh`. It checks configuration validation, installer behavior, shell syntax, upstream Bun tests, and type checking. Run `claude plugin validate plugins/pstack` to validate the Claude package.
+Run `scripts/check.sh`. It checks configuration validation, source links, installer behavior, shell syntax, upstream Bun tests, and type checking. Run `claude plugin validate plugins/pstack` to validate the Claude package. The static checks do not exercise Maestri recruits, floors, portals, or model accounts; those require a live workspace test.
 
 ## Source and license
 
